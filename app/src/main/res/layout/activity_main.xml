@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context="flores.cibertec.com.trabajoparcial.MainActivity">
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_weight="0.13">
+
+        <fragment
+            android:id="@+id/tasks"
+            android:name="flores.cibertec.com.trabajoparcial.ListFragment"
+            android:layout_width="match_parent"
+            android:layout_height="450dp"
+            />
+        <LinearLayout
+            android:orientation="horizontal"
+            android:id="@+id/lnrController"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <Button
+                android:id="@+id/btnNew"
+                android:layout_height="match_parent"
+                android:layout_width="wrap_content"
+                android:text="Nuevo"
+                android:layout_marginLeft="30dp"
+                android:layout_marginRight="10dp"/>
+
+            <Button
+                android:id="@+id/btnUpdate"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Modificar"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"/>
+
+            <Button
+                android:id="@+id/btnDelete"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Eliminar"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="30dp"/>
+
+        </LinearLayout>
+    </LinearLayout>
+
+
+</LinearLayout>

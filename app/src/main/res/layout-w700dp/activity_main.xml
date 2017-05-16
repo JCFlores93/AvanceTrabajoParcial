@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="horizontal"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="flores.cibertec.com.trabajoparcial.MainActivity"
+    android:weightSum="1">
+
+<LinearLayout
+    android:orientation="vertical"
+    android:layout_width="wrap_content"
+    android:layout_height="match_parent"
+    android:layout_weight="0.13">
+
+    <fragment
+        android:id="@+id/tasks"
+        android:name="flores.cibertec.com.trabajoparcial.ListFragment"
+        android:layout_width="match_parent"
+        android:layout_height="560dp"
+        tools:layout="@layout/list_fragment" />
+
+    <LinearLayout
+        android:id="@+id/lnrController"
+        android:layout_width="match_parent"
+        android:layout_marginTop="5dp"
+        android:layout_height="59dp"
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/btnNew"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="30dp"
+            android:layout_marginRight="10dp"
+            android:gravity="center"
+            android:text="Nuevo" />
+
+        <Button
+            android:id="@+id/btnUpdate"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="10dp"
+            android:text="Modificar" />
+
+        <Button
+            android:id="@+id/btnDelete"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="30dp"
+            android:text="Eliminar" />
+
+    </LinearLayout>
+</LinearLayout>
+
+<FrameLayout
+        android:id="@+id/contenedor"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"/>
+</LinearLayout>

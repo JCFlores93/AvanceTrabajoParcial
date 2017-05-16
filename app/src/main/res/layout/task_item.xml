@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/contenedorLayout"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:padding="16dp"
+   >
+<LinearLayout
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <TextView
+        android:id="@+id/txtTitulo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="20sp"
+        tools:text="Título de la tarea" />
+
+</LinearLayout>
+ <LinearLayout
+     android:orientation="horizontal"
+     android:layout_width="match_parent"
+     android:layout_height="wrap_content">
+
+     <TextView
+         android:id="@+id/txtFecha"
+         android:layout_width="wrap_content"
+         android:layout_height="wrap_content"
+         android:layout_marginLeft="16dp"
+         android:layout_marginStart="16dp"
+         android:textSize="14sp"
+         tools:text="Fecha"
+         android:layout_weight="0.22"
+         android:layout_marginTop="8dp"/>
+
+     <TextView
+         android:id="@+id/txtHora"
+         android:layout_width="wrap_content"
+         android:layout_height="wrap_content"
+         android:layout_marginLeft="16dp"
+         android:layout_marginStart="16dp"
+         android:layout_marginTop="8dp"
+         android:layout_weight="0.39"
+         android:textSize="14sp"
+         tools:text="Hora" />
+
+     <TextView
+         android:id="@+id/txtMinute"
+         android:layout_width="wrap_content"
+         android:layout_height="wrap_content"
+         android:layout_marginLeft="16dp"
+         android:layout_marginStart="16dp"
+         android:textSize="14sp"
+         tools:text="Minute"
+         android:layout_weight="0.22"
+         android:layout_marginTop="8dp"/>
+
+     <android.support.v7.widget.SwitchCompat
+         android:id="@+id/swtCmpat"
+         android:layout_width="wrap_content"
+         android:layout_height="wrap_content"
+         android:layout_marginLeft="50dp"
+         android:layout_marginStart="50dp"
+         android:layout_marginTop="8dp"
+         />
+
+
+ </LinearLayout>
+
+
+
+
+</LinearLayout>
