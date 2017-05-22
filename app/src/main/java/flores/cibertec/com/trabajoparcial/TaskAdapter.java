@@ -1,5 +1,8 @@
 package flores.cibertec.com.trabajoparcial;
 
+import android.content.BroadcastReceiver;
+import android.content.Context;
+import android.content.Intent;
 import android.graphics.Color;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
@@ -23,10 +26,11 @@ import flores.cibertec.com.trabajoparcial.MODEL.Task;
  */
 
 public class TaskAdapter
-        extends RecyclerView.Adapter<TaskAdapter.ViewHolder>{
+        extends RecyclerView.Adapter<TaskAdapter.ViewHolder> {
 
     private List<Task> tareas ;
     private OnItemClickListener listener;
+    private OnListTaskListener ListListener;
     private int selectedItem=0;
 
     public TaskAdapter(@NonNull List<Task> tareas ,
@@ -56,11 +60,7 @@ public class TaskAdapter
     }
 
 
-    public void update(ArrayList<Task> addedTasks) {
-        tareas.clear();
-        tareas.addAll(addedTasks);
-        notifyDataSetChanged();
-    }
+
 
     class ViewHolder extends RecyclerView.ViewHolder{
 
@@ -76,8 +76,8 @@ public class TaskAdapter
             this.listener=listener;
             txtTitulo = (TextView)itemView.findViewById(R.id.txtTitulo);
             txtFecha = (TextView)itemView.findViewById(R.id.txtFecha);
-            txtHora = (TextView)itemView.findViewById(R.id.txtHora);
-            txtMinute =(TextView)itemView.findViewById(R.id.txtMinute);
+            /*txtHora = (TextView)itemView.findViewById(R.id.txtHora);
+            txtMinute =(TextView)itemView.findViewById(R.id.txtMinute);*/
             contenedorLinearLayout = (LinearLayout)itemView.findViewById(R.id.contenedorLayout);
         }
 
@@ -87,8 +87,8 @@ public class TaskAdapter
             String newDay = date.format(task.getDay());
             //String day = task.getDay();
             txtFecha.setText(newDay);
-            /*txtHora.setText(String.valueOf(task.getHour()));
-            txtMinute.setText(String.valueOf(task.getMinute()));*/
+            //txtHora.setText(String.valueOf(task.getHour()));
+            //txtMinute.setText(String.valueOf(task.getMinute()));
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
@@ -114,6 +114,17 @@ public class TaskAdapter
     public interface OnItemClickListener{
         void onItemClick(Task tarea);
     }
+
+    public interface OnListTaskListener{
+        void onListTask(ArrayList arrayList);
+    }
+
+    public void swap(List<Task> addedTasks) {
+         tareas.clear();
+        tareas.addAll(addedTasks);
+        notifyDataSetChanged();
+    }
+
 
 
 

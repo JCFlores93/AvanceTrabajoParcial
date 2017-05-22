@@ -1,16 +1,22 @@
 package flores.cibertec.com.trabajoparcial;
 
+import android.app.IntentService;
+import android.content.BroadcastReceiver;
 import android.content.ContentResolver;
 import android.content.ContentValues;
+import android.content.Intent;
 import android.database.Cursor;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 
 
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -18,11 +24,13 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 
+import java.lang.ref.WeakReference;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 import flores.cibertec.com.trabajoparcial.DB.TaskContract;
 import flores.cibertec.com.trabajoparcial.MODEL.Task;
@@ -40,26 +48,26 @@ import static flores.cibertec.com.trabajoparcial.R.id.edtTitulo;
 public class TaskNew extends Fragment
         implements View.OnClickListener{
 
-    public static final String ARG_TASK= "task";
+    public static final String ARG_TASK = "task";
     private static final String TAG = "TaskNew";
+    public static final String TAG_LIST = "LISTA";
 
     private Task task;
-    EditText edtTitulo,edtFecha;
-    private List<Task> AddedTasks;
+    EditText edtTitulo, edtFecha;
+    static List<Task> AddedTasks;
     ListFragment fragment;
+    TaskAdapter taskAdapter;
 
-    TaskAdapter taskAdapter ;
 
-
-    public static TaskNew newInstance(Task task){
+    public static TaskNew newInstance(Task task) {
         TaskNew tf = new TaskNew();
         Bundle args = new Bundle();
-        args.putParcelable(ARG_TASK,task);
+        args.putParcelable(ARG_TASK, task);
         tf.setArguments(args);
         return tf;
     }
 
-    public TaskNew(){
+    public TaskNew() {
 
     }
 
@@ -82,8 +90,8 @@ public class TaskNew extends Fragment
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-         edtTitulo = (EditText) view.findViewById(R.id.edtTitulo);
-         edtFecha = (EditText) view.findViewById(R.id.edtFecha);
+        edtTitulo = (EditText) view.findViewById(R.id.edtTitulo);
+        edtFecha = (EditText) view.findViewById(R.id.edtFecha);
         EditText edtEstado = (EditText) view.findViewById(R.id.edtEstado);
         Button btnSave = (Button) view.findViewById(R.id.btnSave);
         Button btnCancel = (Button) view.findViewById(R.id.btnCancel);
@@ -96,33 +104,27 @@ public class TaskNew extends Fragment
 
     @Override
     public void onClick(View v) {
-        switch (v.getId()){
-            case R.id.btnSave :
+        switch (v.getId()) {
+            case R.id.btnSave:
                 insert(getContentValues());
-               // showTaskList();
+              //  showTaskList();
 
-            break;
+                break;
 
-            case R.id.btnCancel :
+            case R.id.btnCancel:
                 FragmentTransaction fragmentManager = getFragmentManager().beginTransaction();
-                fragmentManager.replace(contenedor,TaskFragment.newInstance(getTaskList().get(0)));
+                fragmentManager.replace(contenedor, TaskFragment.newInstance(getTaskList().get(0)));
                 fragmentManager.commit();
                 break;
 
         }
     }
 
-  private void showTaskList() {
-
-/*taskAdapter.update((ArrayList<Task>) getTaskList());*/
-
-   }
-
-    private List<Task> getTaskList(){
+    private List<Task> getTaskList() {
         Cursor cursor = query();
         List<Task> tasks = new ArrayList<>();
-        if (cursor != null){
-            while (cursor.moveToNext()){
+        if (cursor != null) {
+            while (cursor.moveToNext()) {
                 Task task = cursorToTask(cursor);
                 tasks.add(task);
             }
@@ -133,7 +135,7 @@ public class TaskNew extends Fragment
 
     private Task cursorToTask(Cursor cursor) {
         Task task = new Task();
-        task.setId(cursor.getLong(0)) ;
+        task.setId(cursor.getLong(0));
         task.setTaskTitle(cursor.getString(1));
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
         Date date = null;
@@ -159,15 +161,15 @@ public class TaskNew extends Fragment
                 projection, null, null, null);
     }
 
-    private void insert(ContentValues values){
-       ContentResolver cr = getActivity().getContentResolver();
-       Uri uri = cr.insert(TaskContract.Task.CONTENT_URI, values);
-       if (uri != null) {
-           Log.i(TAG, "Inserted row id: " + uri.getLastPathSegment());
-       } else {
-           Log.i(TAG, "Uri is null");
-       }
-   }
+    private void insert(ContentValues values) {
+        ContentResolver cr = getActivity().getContentResolver();
+        Uri uri = cr.insert(TaskContract.Task.CONTENT_URI, values);
+        if (uri != null) {
+            Log.i(TAG, "Inserted row id: " + uri.getLastPathSegment());
+        } else {
+            Log.i(TAG, "Uri is null");
+        }
+    }
 
 
     public ContentValues getContentValues() {
@@ -177,7 +179,33 @@ public class TaskNew extends Fragment
         return values;
     }
 
+    public class MyIntentService extends IntentService {
 
+        private static final String TAG = "MyIntentService";
 
+        public static final String ACTION_TASK_STARTED = "action_task_started";
+        public static final String ACTION_TASK_FINISHED = "action_task_finished";
 
+        public MyIntentService() {
+            super("MyIntentService");
+        }
+
+        @Override
+        protected void onHandleIntent(@Nullable Intent intent) {
+            Intent startedIntent = new Intent(ACTION_TASK_STARTED);
+            startedIntent.putParcelableArrayListExtra("LISTA", (ArrayList) AddedTasks);
+            LocalBroadcastManager.getInstance(this).sendBroadcast(startedIntent);
+            Log.d(TAG, "onHandleIntent: start task");
+
+            try {
+                TimeUnit.SECONDS.sleep(5);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+
+            Intent finishedIntent = new Intent(ACTION_TASK_FINISHED);
+            LocalBroadcastManager.getInstance(this).sendBroadcast(finishedIntent);
+            Log.d(TAG, "onHandleIntent: finish task");
+        }
+    }
 }

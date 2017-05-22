@@ -22,6 +22,8 @@
             android:name=".DB.TaskProvider"
             android:exported="true"/>
 
+        <service android:name=".MyIntentService"></service>
+
     </application>
 
 </manifest>

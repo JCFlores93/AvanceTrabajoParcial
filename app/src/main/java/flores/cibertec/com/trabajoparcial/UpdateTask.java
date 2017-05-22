@@ -1,7 +1,9 @@
 package flores.cibertec.com.trabajoparcial;
 
+import android.app.IntentService;
 import android.content.ContentResolver;
 import android.content.ContentValues;
+import android.content.Intent;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
@@ -187,4 +189,6 @@ public class UpdateTask extends Fragment implements View.OnClickListener{
         values.put(TaskContract.Task.COLUMN_NAME_DATE, edtFecha.getText().toString());
         return values;
     }
+
+
 }
